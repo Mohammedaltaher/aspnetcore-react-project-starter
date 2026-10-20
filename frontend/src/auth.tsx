@@ -3,6 +3,7 @@ import { useState } from 'react'
 import { Navigate, useNavigate } from 'react-router-dom'
 import { api, ApiError } from './api/client'
 import { Button } from './components/ui/button'
+import { FeedbackBanner, LoadingState } from './components/patterns'
 import type { ReactNode } from 'react'
 
 export function useAuth() {
@@ -13,9 +14,9 @@ export function useAuth() {
 
 export function Protected({ children }: { children: ReactNode }) {
   const auth = useAuth()
-  if (auth.isPending) return <main className="page"><p>Checking your session…</p></main>
+  if (auth.isPending) return <main className="page"><LoadingState label="Checking your session…" /></main>
   if (auth.error instanceof ApiError && auth.error.status === 401) return <Navigate to="/login" replace />
-  if (auth.isError) return <main className="page"><p>Could not connect to the API.</p><Button onClick={() => auth.refetch()}>Try again</Button></main>
+  if (auth.isError) return <main className="page"><FeedbackBanner tone="error">Could not connect to the API. <Button variant="link" onClick={() => auth.refetch()}>Try again</Button></FeedbackBanner></main>
   return <>{children}</>
 }
 

@@ -5,11 +5,11 @@ import { useForm } from 'react-hook-form'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 import { z } from 'zod'
 import { api, type CustomerInput } from '../api/client'
+import { FeedbackBanner, FieldError, LoadingState, PageHeading } from '../components/patterns'
 import { Button, buttonVariants } from '../components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '../components/ui/card'
 import { Input } from '../components/ui/input'
 import { Label } from '../components/ui/label'
-import { FieldError } from './LoginPage'
 
 const schema = z.object({ name: z.string().trim().min(1, 'Name is required').max(120), email: z.email().max(254) })
 
@@ -26,15 +26,16 @@ export function CustomerFormPage() {
       await cache.invalidateQueries({ queryKey: ['customers'] })
       navigate(`/customers/${customer.id}`)
     } })
-  if (id && query.isPending) return <main className="page"><p>Loading customer…</p></main>
-  if (id && query.isError) return <main className="page"><p role="alert" className="error">Could not load customer.</p><Link to="/customers">Back to customers</Link></main>
+  if (id && query.isPending) return <main className="page narrow-page"><LoadingState label="Loading customer…" /></main>
+  if (id && query.isError) return <main className="page narrow-page"><FeedbackBanner tone="error">Could not load customer.</FeedbackBanner><Link to="/customers">Back to customers</Link></main>
   return <main className="page narrow-page">
-    <Link className={buttonVariants({ variant: 'link' })} to="/customers">← Customers</Link>
-    <Card><CardHeader><CardTitle>{id ? 'Edit customer' : 'New customer'}</CardTitle></CardHeader><CardContent>
+    <Link className="back-link" to="/customers">← Back to customers</Link>
+    <PageHeading eyebrow={id ? 'CUSTOMERS / EDIT' : 'CUSTOMERS / CREATE'} title={id ? 'Edit customer' : 'New customer'} description={id ? 'Update the customer information below.' : 'Add a customer to your workspace.'} />
+    <Card className="form-card"><CardHeader><CardTitle>Customer information</CardTitle></CardHeader><CardContent>
       <form className="form-stack" onSubmit={handleSubmit(values => save.mutate(values))}>
         <div><Label htmlFor="name">Name</Label><Input id="name" {...register('name')} /><FieldError message={errors.name?.message} /></div>
         <div><Label htmlFor="email">Email</Label><Input id="email" type="email" {...register('email')} /><FieldError message={errors.email?.message} /></div>
-        {save.isError && <p role="alert" className="error">{save.error.message}</p>}
+        {save.isError && <FeedbackBanner tone="error">{save.error.message}</FeedbackBanner>}
         <div className="actions"><Button type="submit" disabled={save.isPending}>{save.isPending ? 'Saving…' : 'Save customer'}</Button><Link className={buttonVariants({ variant: 'outline' })} to="/customers">Cancel</Link></div>
       </form>
     </CardContent></Card>

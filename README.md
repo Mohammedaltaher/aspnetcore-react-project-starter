@@ -1,6 +1,6 @@
 # ASP.NET Core + React project starter
 
-A copyable modular monolith starter for ASP.NET Core 10, PostgreSQL, React, TypeScript, Tailwind, shadcn/ui, and Docker. The **Customers** module is a working example to replace with a real business module. The [standard development plan](docs/standard-development-plan.md), [engineering review](docs/engineering-review.md), and planning documents live under `docs/`.
+A copyable modular monolith starter for ASP.NET Core 10, PostgreSQL, React, TypeScript, Tailwind, shadcn/ui, and Docker. The **Customers** module is a working example to replace with a real business module. The [standard development plan](docs/standard-development-plan.md), [frontend design guide](docs/frontend-design.md), [engineering review](docs/engineering-review.md), and planning documents live under `docs/`.
 
 ## Start the sample
 
@@ -13,6 +13,8 @@ docker compose up --build -d
 ```
 
 Open `http://localhost:8080` and sign in with `BOOTSTRAP_ADMIN_EMAIL` and `BOOTSTRAP_ADMIN_PASSWORD`. Development startup applies the checked-in EF Core migration and creates that admin if it does not exist. `/health/live` and `/health/ready` are available through the frontend proxy. The development OpenAPI JSON is at `http://localhost:5080/openapi/v1.json`.
+
+Preview the reusable frontend patterns at `http://localhost:8080/design-system`. This gallery uses sample data and works without signing in.
 
 Compose waits for API readiness before starting the web container. If startup stalls, run `docker compose ps` and `docker compose logs api`. An invalid bootstrap admin password stops API startup. Correct the ignored local `.env` file, then run `docker compose up -d --force-recreate api web`.
 
