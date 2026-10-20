@@ -1,0 +1,26 @@
+# Run reviewed EF migrations before starting this stack. Terminate TLS at your ingress.
+services:
+  api:
+    build:
+      context: .
+      dockerfile: backend/Dockerfile
+    environment:
+      ASPNETCORE_ENVIRONMENT: Production
+      ConnectionStrings__Default: ${DATABASE_CONNECTION_STRING:?Set DATABASE_CONNECTION_STRING}
+      DataProtection__KeysPath: /app/keys
+      BootstrapAdmin__Email: ${BOOTSTRAP_ADMIN_EMAIL:-}
+      BootstrapAdmin__Password: ${BOOTSTRAP_ADMIN_PASSWORD:-}
+    volumes:
+      - api_keys:/app/keys
+    restart: unless-stopped
+  web:
+    build:
+      context: .
+      dockerfile: frontend/Dockerfile
+    ports:
+      - "127.0.0.1:8080:8080"
+    depends_on:
+      - api
+    restart: unless-stopped
+volumes:
+  api_keys:

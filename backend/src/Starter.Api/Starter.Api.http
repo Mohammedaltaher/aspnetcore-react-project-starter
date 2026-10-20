@@ -1,0 +1,14 @@
+@Host = http://localhost:5080
+
+GET {{Host}}/health/live
+
+###
+GET {{Host}}/health/ready
+
+###
+GET {{Host}}/openapi/v1.json
+
+###
+# After signing in, supply the Identity cookie from the login response.
+GET {{Host}}/api/v1/customers?page=1&pageSize=20
+Cookie: .AspNetCore.Identity.Application=<paste-cookie-here>
