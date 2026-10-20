@@ -5,6 +5,19 @@ on:
 jobs:
   backend:
     runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:17-alpine
+        env:
+          POSTGRES_USER: starter_test
+          POSTGRES_PASSWORD: starter_test_password
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U starter_test -d postgres"
+          --health-interval 5s
+          --health-timeout 3s
+          --health-retries 20
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-dotnet@v4
@@ -12,6 +25,8 @@ jobs:
           dotnet-version: 10.0.x
       - run: dotnet restore Starter.slnx
       - run: dotnet test Starter.slnx --no-restore --configuration Release
+        env:
+          TEST_POSTGRES_CONNECTION: Host=localhost;Port=5432;Database=postgres;Username=starter_test;Password=starter_test_password
   frontend:
     runs-on: ubuntu-latest
     steps:

@@ -47,9 +47,11 @@ builder.Services.AddHealthChecks().AddDbContextCheck<AppDbContext>("database");
 builder.Services.AddRateLimiter(options =>
 {
     options.RejectionStatusCode = StatusCodes.Status429TooManyRequests;
+    // Compose requests arrive from NGINX, so this is a coarse proxy-level backstop.
+    // Account lockout handles repeated password failures for an individual user.
     options.AddPolicy("auth", context => RateLimitPartition.GetFixedWindowLimiter(
         context.Connection.RemoteIpAddress?.ToString() ?? "unknown",
-        _ => new FixedWindowRateLimiterOptions { PermitLimit = 10, Window = TimeSpan.FromMinutes(1), QueueLimit = 0 }));
+        _ => new FixedWindowRateLimiterOptions { PermitLimit = 120, Window = TimeSpan.FromMinutes(1), QueueLimit = 0 }));
 });
 var allowedOrigins = builder.Configuration.GetSection("Cors:AllowedOrigins").Get<string[]>() ?? [];
 if (allowedOrigins.Length > 0)
@@ -83,16 +85,20 @@ app.MapPost("/api/v1/auth/login", async (LoginInput input, SignInManager<AppUser
     signInManager.AuthenticationScheme = IdentityConstants.ApplicationScheme;
     var result = await signInManager.PasswordSignInAsync(input.Email, input.Password, isPersistent: false, lockoutOnFailure: true);
     return result.Succeeded ? Results.NoContent() : Results.Unauthorized();
-}).RequireRateLimiting("auth");
-app.MapGet("/api/v1/auth/me", (ClaimsPrincipal user) => Results.Ok(new
-    { email = user.FindFirstValue(ClaimTypes.Email), isAdmin = user.IsInRole("Admin") }))
-    .RequireAuthorization();
+}).RequireRateLimiting("auth")
+    .Produces(StatusCodes.Status204NoContent)
+    .Produces(StatusCodes.Status400BadRequest)
+    .Produces(StatusCodes.Status401Unauthorized);
+app.MapGet("/api/v1/auth/me", (ClaimsPrincipal user) =>
+    Results.Ok(new AuthUser(user.FindFirstValue(ClaimTypes.Email) ?? string.Empty, user.IsInRole("Admin"))))
+    .RequireAuthorization().Produces<AuthUser>()
+    .Produces(StatusCodes.Status401Unauthorized);
 app.MapPost("/api/v1/auth/logout", async (SignInManager<AppUser> signInManager) =>
 {
     signInManager.AuthenticationScheme = IdentityConstants.ApplicationScheme;
     await signInManager.SignOutAsync();
     return Results.NoContent();
-}).RequireAuthorization();
+}).RequireAuthorization().Produces(StatusCodes.Status204NoContent);
 
 app.Use(async (context, next) =>
 {
@@ -186,3 +192,4 @@ public sealed class ApiExceptionHandler(ILogger<ApiExceptionHandler> logger) : I
 public partial class Program { }
 
 public sealed record LoginInput(string Email, string Password);
+public sealed record AuthUser(string Email, bool IsAdmin);

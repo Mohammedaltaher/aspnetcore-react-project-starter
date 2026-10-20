@@ -3,7 +3,7 @@ import type { components } from './schema'
 export type Customer = components['schemas']['CustomerDto']
 export type CustomerInput = components['schemas']['CustomerInput']
 export type CustomerPage = components['schemas']['PagedResultOfCustomerDto']
-export type AuthUser = { email: string; isAdmin: boolean }
+export type AuthUser = components['schemas']['AuthUser']
 
 export class ApiError extends Error {
   status: number

@@ -1,6 +1,6 @@
 # ASP.NET Core + React project starter
 
-A copyable modular monolith starter for ASP.NET Core 10, PostgreSQL, React, TypeScript, Tailwind, shadcn/ui, and Docker. The **Customers** module is a working example to replace with a real business module. The [standard development plan](docs/standard-development-plan.md) and planning documents live under `docs/`.
+A copyable modular monolith starter for ASP.NET Core 10, PostgreSQL, React, TypeScript, Tailwind, shadcn/ui, and Docker. The **Customers** module is a working example to replace with a real business module. The [standard development plan](docs/standard-development-plan.md), [engineering review](docs/engineering-review.md), and planning documents live under `docs/`.
 
 ## Start the sample
 
@@ -14,7 +14,7 @@ docker compose up --build -d
 
 Open `http://localhost:8080` and sign in with `BOOTSTRAP_ADMIN_EMAIL` and `BOOTSTRAP_ADMIN_PASSWORD`. Development startup applies the checked-in EF Core migration and creates that admin if it does not exist. `/health/live` and `/health/ready` are available through the frontend proxy. The development OpenAPI JSON is at `http://localhost:5080/openapi/v1.json`.
 
-If the page loads but API requests return 502, run `docker compose logs api`. An invalid bootstrap admin password stops API startup. Correct the ignored local `.env` file, then run `docker compose up -d --force-recreate api web`. Check `http://localhost:8080/health/ready` before signing in.
+Compose waits for API readiness before starting the web container. If startup stalls, run `docker compose ps` and `docker compose logs api`. An invalid bootstrap admin password stops API startup. Correct the ignored local `.env` file, then run `docker compose up -d --force-recreate api web`.
 
 ## Use for a new project
 
@@ -39,7 +39,7 @@ pnpm install
 pnpm dev
 ```
 
-The API listens on `http://localhost:5080`; Vite proxies `/api` to it. In another terminal, run `dotnet test Starter.slnx` and `cd frontend && pnpm test && pnpm build && pnpm lint`. After changing endpoints, start the API and run `cd frontend && pnpm generate:api` to refresh the committed OpenAPI types.
+The API listens on `http://localhost:5080`; Vite proxies `/api` to it. In another terminal, run `dotnet test Starter.slnx` and `cd frontend && pnpm test && pnpm build && pnpm lint`. To exercise the PostgreSQL integration test locally, set `TEST_POSTGRES_CONNECTION` to a PostgreSQL connection string for a user allowed to create and drop databases before running `dotnet test`. CI always runs this test against its PostgreSQL service. After changing endpoints, start the API and run `cd frontend && pnpm generate:api` to refresh the committed OpenAPI types.
 
 ## Structure
 

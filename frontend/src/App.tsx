@@ -1,4 +1,4 @@
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import { QueryClientProvider } from '@tanstack/react-query'
 import { BrowserRouter, Link, Navigate, Route, Routes } from 'react-router-dom'
 import type { ReactNode } from 'react'
 import { LogoutButton, Protected, useAuth } from './auth'
@@ -6,8 +6,9 @@ import { CustomerDetailsPage } from './pages/CustomerDetailsPage'
 import { CustomerFormPage } from './pages/CustomerFormPage'
 import { CustomersPage } from './pages/CustomersPage'
 import { LoginPage } from './pages/LoginPage'
+import { createQueryClient } from './queryClient'
 
-const queryClient = new QueryClient({ defaultOptions: { queries: { retry: 1, refetchOnWindowFocus: false } } })
+const queryClient = createQueryClient()
 
 function Layout({ children }: { children: ReactNode }) {
   const auth = useAuth()

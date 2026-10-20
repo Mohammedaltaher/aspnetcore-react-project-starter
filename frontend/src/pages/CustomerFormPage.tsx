@@ -22,6 +22,7 @@ export function CustomerFormPage() {
   useEffect(() => { if (query.data) reset({ name: query.data.name, email: query.data.email }) }, [query.data, reset])
   const save = useMutation({ mutationFn: (input: CustomerInput) => id ? api.updateCustomer(id, input) : api.createCustomer(input),
     onSuccess: async customer => {
+      cache.setQueryData(['customer', customer.id], customer)
       await cache.invalidateQueries({ queryKey: ['customers'] })
       navigate(`/customers/${customer.id}`)
     } })
