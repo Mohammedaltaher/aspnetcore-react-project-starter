@@ -4,7 +4,7 @@ A copyable modular monolith starter for ASP.NET Core 10, PostgreSQL, React, Type
 
 ## Start the sample
 
-Requirements: Docker with Compose. Copy `.env.example` to `.env`, then replace all passwords with strong values. The bootstrap admin password must meet ASP.NET Identity's default complexity rules and be at least 12 characters.
+Requirements: Docker with Compose. Copy `.env.example` to `.env`, then replace all passwords with strong values. The bootstrap admin password must be at least 12 characters and include an uppercase letter, a lowercase letter, a digit, and a symbol.
 
 ```bash
 cp .env.example .env
@@ -13,6 +13,8 @@ docker compose up --build -d
 ```
 
 Open `http://localhost:8080` and sign in with `BOOTSTRAP_ADMIN_EMAIL` and `BOOTSTRAP_ADMIN_PASSWORD`. Development startup applies the checked-in EF Core migration and creates that admin if it does not exist. `/health/live` and `/health/ready` are available through the frontend proxy. The development OpenAPI JSON is at `http://localhost:5080/openapi/v1.json`.
+
+If the page loads but API requests return 502, run `docker compose logs api`. An invalid bootstrap admin password stops API startup. Correct the ignored local `.env` file, then run `docker compose up -d --force-recreate api web`. Check `http://localhost:8080/health/ready` before signing in.
 
 ## Use for a new project
 
