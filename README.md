@@ -14,9 +14,7 @@ docker compose up --build -d
 
 Open `http://localhost:8080` for the sample dashboard. Sign in with `BOOTSTRAP_ADMIN_EMAIL` and `BOOTSTRAP_ADMIN_PASSWORD` to use the Customers module. Development startup applies the checked-in EF Core migration and creates that admin if it does not exist. `/health/live` and `/health/ready` are available through the frontend proxy. The development OpenAPI JSON is at `http://localhost:5080/openapi/v1.json`.
 
-Preview the reference-inspired dashboard at `http://localhost:8080/design-system` and reusable components at `http://localhost:8080/components`. Both previews use sample data and work without signing in.
-
-![Dashboard design preview](docs/dashboard-preview.png)
+Preview the reference-matched ICarePro dashboard at `http://localhost:8080/design-system` and reusable components at `http://localhost:8080/components`. Both previews use sample data and work without signing in.
 
 Compose waits for API readiness before starting the web container. If startup stalls, run `docker compose ps` and `docker compose logs api`. An invalid bootstrap admin password stops API startup. Correct the ignored local `.env` file, then run `docker compose up -d --force-recreate api web`.
 

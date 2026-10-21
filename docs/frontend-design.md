@@ -1,10 +1,10 @@
 # Frontend design foundation
 
-The starter's dashboard is inspired by [Riju Rajan's ICarePro medical admin dashboard](https://dribbble.com/shots/21377516-Medical-Admin-Dashboard-ICarePro). It adapts the white navigation rail, quiet canvas, thin card borders, colorful metric icons, charts, and compact tables to a generic Customers sample. It does not copy the medical branding or claim to provide medical workflows.
+The `/design-system` preview reproduces the supplied ICarePro dashboard reference: Poppins typography, a white navigation rail, a quiet gray canvas, thin card borders, colorful metric icons, charts, and compact medical sample tables. It uses sample data and portraits from the supplied reference image. The authenticated Customers module remains a generic starter example.
 
 ## Preview routes
 
-- `/design-system` shows the dashboard composition with clearly labeled sample metrics. The chart period control switches the sample data.
+- `/design-system` shows the reference dashboard composition with sample metrics and medical tables.
 - `/components` shows buttons, fields, status badges, feedback, loading, empty states, tables, details, and confirmation patterns.
 - `/customers` is the authenticated Customers module connected to the API.
 
@@ -15,12 +15,12 @@ An [editable Figma dashboard mockup](https://www.figma.com/design/7sYGGns2J3Soke
 | Pattern | Implementation | Use |
 | --- | --- | --- |
 | App shell and navigation | `src/components/AppShell.tsx` | White sidebar, active navigation, mobile menu, account actions |
-| Dashboard composition | `src/pages/DashboardPreviewPage.tsx` | Sample metrics, trends, channel chart, and tables |
+| Dashboard composition | `src/pages/DashboardPreviewPage.tsx` | Reference metrics, survey and disease charts, and tables |
 | Page heading | `src/components/patterns.tsx` | Eyebrow, title, description, and main action |
 | Status and feedback | `src/components/patterns.tsx` | Badges, success/error messages, loading, and empty states |
 | Confirmation dialog | `src/components/patterns.tsx` | Name the record before destructive actions |
 | Buttons, cards, fields, table | `src/components/ui/` | Shared controls based on shadcn/ui and Base UI |
-| Tokens and layout | `src/design.css`, `src/reference-theme.css` | Shared patterns plus the reference-inspired theme and dashboard layout |
+| Tokens and layout | `src/design.css`, `src/reference-theme.css`, `src/dashboard-reference.css` | Shared patterns plus the reference preview theme and layout |
 
 ## Page conventions
 
