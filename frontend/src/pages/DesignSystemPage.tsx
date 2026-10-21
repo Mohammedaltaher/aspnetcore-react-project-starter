@@ -25,9 +25,9 @@ export function DesignSystemPage() {
       <div className="section-heading"><div><p className="eyebrow">01 / FOUNDATION</p><h2 id="foundation-title">A calm canvas for busy work</h2></div><p>One spacing rhythm, clear type hierarchy, and colors that communicate purpose.</p></div>
       <div className="foundation-grid">
         <Card><CardHeader><CardTitle>Color tokens</CardTitle></CardHeader><CardContent><div className="swatches">
-          <div><span className="swatch swatch-primary" /><strong>Primary</strong><small>#3C50E0</small></div>
-          <div><span className="swatch swatch-ink" /><strong>Ink</strong><small>#182339</small></div>
-          <div><span className="swatch swatch-canvas" /><strong>Canvas</strong><small>#F6F8FC</small></div>
+          <div><span className="swatch swatch-primary" /><strong>Primary</strong><small>#3165F5</small></div>
+          <div><span className="swatch swatch-ink" /><strong>Ink</strong><small>#202329</small></div>
+          <div><span className="swatch swatch-canvas" /><strong>Canvas</strong><small>#FAFBFC</small></div>
           <div><span className="swatch swatch-success" /><strong>Success</strong><small>#16805D</small></div>
           <div><span className="swatch swatch-warning" /><strong>Warning</strong><small>#AF6B18</small></div>
         </div></CardContent></Card>

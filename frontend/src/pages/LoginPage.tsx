@@ -43,6 +43,6 @@ export function LoginPage() {
         {error && <FeedbackBanner tone="error">{error}</FeedbackBanner>}
         <Button size="lg" disabled={isSubmitting} type="submit">{isSubmitting ? 'Signing in…' : 'Sign in'} <ArrowRight size={16} /></Button>
       </form></CardContent>
-    </Card><p className="login-preview-link">Exploring the template? <Link to="/design-system">Preview the UI kit <ArrowRight size={14} /></Link></p></div>
+    </Card><p className="login-preview-link">Exploring the template? <Link to="/design-system">Preview the dashboard <ArrowRight size={14} /></Link></p></div>
   </main>
 }

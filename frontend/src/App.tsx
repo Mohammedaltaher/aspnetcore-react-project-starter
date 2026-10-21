@@ -8,6 +8,7 @@ import { CustomerFormPage } from './pages/CustomerFormPage'
 import { CustomersPage } from './pages/CustomersPage'
 import { LoginPage } from './pages/LoginPage'
 import { DesignSystemPage } from './pages/DesignSystemPage'
+import { DashboardPreviewPage } from './pages/DashboardPreviewPage'
 import { createQueryClient } from './queryClient'
 
 const queryClient = createQueryClient()
@@ -20,12 +21,13 @@ function Layout({ children }: { children: ReactNode }) {
 function App() {
   return <QueryClientProvider client={queryClient}><BrowserRouter><Routes>
     <Route path="/login" element={<LoginPage />} />
-    <Route path="/design-system" element={<AppShell preview><DesignSystemPage /></AppShell>} />
+    <Route path="/design-system" element={<AppShell preview section="Dashboard"><DashboardPreviewPage /></AppShell>} />
+    <Route path="/components" element={<AppShell preview section="Components"><DesignSystemPage /></AppShell>} />
     <Route path="/customers" element={<Protected><Layout><CustomersPage /></Layout></Protected>} />
     <Route path="/customers/new" element={<Protected><Layout><CustomerFormPage /></Layout></Protected>} />
     <Route path="/customers/:id/edit" element={<Protected><Layout><CustomerFormPage /></Layout></Protected>} />
     <Route path="/customers/:id" element={<Protected><Layout><CustomerDetailsPage /></Layout></Protected>} />
-    <Route path="*" element={<Navigate to="/customers" replace />} />
+    <Route path="*" element={<Navigate to="/design-system" replace />} />
   </Routes></BrowserRouter></QueryClientProvider>
 }
 
